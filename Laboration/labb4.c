@@ -1,10 +1,3 @@
-/* Program som simulerar olika algoritmer för diskarmsrörelser
-Se Silberschatz/Galvin/Gagne sid 493 och framåt */
-
-/*   För alla funktioner gäller:
-pre: size är storleken av vector och större än 0. size < 100.
-post: returnerar summan av rörelserna från parked genom hela vektorn */
-
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,6 +13,19 @@ int FCFS(int parked, int vector[], int size) {
 	return sum;
 }
 
+void sort(int vector[], int size) {
+	int i,j,temp;
+	for (i = 1; i < size; i++) {
+		for (j = 0; j < size - i; j++) {
+			if (vector[j] > vector[j + 1]) {
+				temp = vector[j];
+				vector[j] = vector[j + 1];
+				vector[j + 1] = temp;
+			}
+	
+		}	
+	}
+}
 int SSTF(int parked, int vector[], int size) {
 	int i, now, sum, beenthere[100] = { 0 };    /* beenthere = 0, vi har inte varit där än */
 	int ready = 0, distance, nearest;
@@ -55,20 +61,9 @@ int SSTF(int parked, int vector[], int size) {
 }
 
 int SCAN(int parked, int vector[], int size) {
-
-	int i, j, sum = 0, now, zero = 0, distance = INT_MAX, nearest, ready = 0, fromzero = 0, beenthere[100] = { 0 };
-	int max = 0, temp;
+	int i, sum = 0, now, distance = INT_MAX, nearest, beenthere[100] = { 0 };
 	now = parked;
-	for (i = 1; i < size; i++) {
-		for (j = 0; j < size - i; j++) {
-			if (vector[j] > vector[j + 1]) {
-				temp = vector[j];
-				vector[j] = vector[j + 1];
-				vector[j + 1] = temp;
-			}
-		}
-	}
-
+	sort(vector,size); // Sortera vektorn i egen funktion
 	for (i = 0; i < size; i++) {
 		if (vector[i] > now) {
 			distance = abs(now - vector[i]);
@@ -94,11 +89,95 @@ int SCAN(int parked, int vector[], int size) {
 		}
 
 	}
-	
-
 	return sum;
 }
 
+int CSCAN(int parked, int vector[], int size) {
+	int i, sum = 0, now, distance = INT_MAX, nearest, beenthere[100] = { 0 };
+	now = parked;
+	sort(vector,size); // Sortera vektorn i egen funktion
+	for (i = 0; i < size; i++) {
+		if (vector[i] > now) {
+			distance = abs(now - vector[i]);
+			sum = sum + distance;
+			nearest = i;
+			now = vector[nearest];
+			beenthere[nearest] = 1;
+			printf("visit %d\n", now);
+		}
+	}
+	sum = sum + abs(vector[size - 1] - 199);
+	now = 0;
+	for (i = 0; i < size; i++) {
+		if (vector[i] > now) {
+			if (beenthere[i] == 0) {
+				distance = abs(now - vector[i]);
+				sum = sum + distance;
+				nearest = i;
+				now = vector[nearest];
+				printf("visit %d\n", now);
+			}
+		}
+	}
+	return sum;
+}
+
+int LOOK(int parked, int vector[], int size) {
+	int i, sum = 0, now, distance = INT_MAX, nearest, beenthere[100] = { 0 };
+	now = parked;
+	sort(vector,size); // Sortera vektorn i egen funktion
+	for (i = 0; i < size; i++) {
+		if (vector[i] > now) {
+			distance = abs(now - vector[i]);
+			sum = sum + distance;
+			nearest = i;
+			now = vector[nearest];
+			beenthere[nearest] = 1;
+			printf("visit %d\n", now);
+		}
+	}
+	for (i = size-1; i >= 0; i--) {
+		if (vector[i] < now) {
+			if (beenthere[i] == 0) {
+				distance = abs(now - vector[i]);
+				sum = sum + distance;
+				nearest = i;
+				now = vector[nearest];
+				printf("visit %d\n", now);
+			}
+		}
+	}
+	return sum;
+}
+
+int CLOOK(int parked, int vector[], int size) {
+	int i, sum = 0, now, distance = INT_MAX, nearest, beenthere[100] = { 0 };
+	now = parked;
+	sort(vector,size); // Sortera vektorn i egen funktion
+	for (i = 0; i < size; i++) {
+		if (vector[i] > now) {
+			distance = abs(now - vector[i]);
+			sum = sum + distance;
+			nearest = i;
+			now = vector[nearest];
+			beenthere[nearest] = 1;
+			printf("visit %d\n", now);
+		}
+	}
+	now = vector[0];
+	for (i = 0; i < size; i++) {
+		if (vector[i] >= now) {
+			if (beenthere[i] == 0) {
+				distance = abs(now - vector[i]);
+				sum = sum + distance;
+				nearest = i;
+				now = vector[nearest];
+				printf("visit %d\n", now);
+			}
+		}
+	}
+	return sum;
+}
 main() {
 	int v[] = { 98, 183, 37, 122, 14, 124, 65, 67 };
 	int v2[] = { 183, 37, 122, 14, 124, 65, 67, 98 };
@@ -108,5 +187,8 @@ main() {
 	printf("FCFS: %d\n", FCFS(53, v, sizeof(v) / sizeof(int)));
 	printf("SSTF: %d\n", SSTF(53, v, sizeof(v) / sizeof(int)));
 	printf("SCAN: %d\n", SCAN(53, v, sizeof(v) / sizeof(int)));
+	printf("CSCAN: %d\n", CSCAN(53, v, sizeof(v) / sizeof(int)));
+	printf("LOOK: %d\n", LOOK(53, v, sizeof(v) / sizeof(int)));
+	printf("CLOOK: %d\n", CLOOK(53, v, sizeof(v) / sizeof(int)));
 	system("PAUSE");
 }
