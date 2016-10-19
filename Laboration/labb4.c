@@ -22,7 +22,6 @@ void sort(int vector[], int size) {
 				vector[j] = vector[j + 1];
 				vector[j + 1] = temp;
 			}
-	
 		}	
 	}
 }
@@ -44,7 +43,6 @@ int SSTF(int parked, int vector[], int size) {
 		}
 		/* move */
 		now = vector[nearest];
-		printf("visit %d\n", now);
 		/* sum travel */
 		sum = sum + distance;
 		/* set beenthere */
@@ -64,6 +62,9 @@ int SCAN(int parked, int vector[], int size) {
 	int i, sum = 0, now, distance = INT_MAX, nearest, beenthere[100] = { 0 };
 	now = parked;
 	sort(vector,size); // Sortera vektorn i egen funktion
+	if(parked > vector[size-1]) {
+		sum = abs(parked-199);
+	} else {	
 	for (i = 0; i < size; i++) {
 		if (vector[i] > now) {
 			distance = abs(now - vector[i]);
@@ -71,11 +72,10 @@ int SCAN(int parked, int vector[], int size) {
 			nearest = i;
 			now = vector[nearest];
 			beenthere[nearest] = 1;
-			printf("visit %d\n", now);
 		}
-		
 	}
 	sum = sum + abs(vector[size - 1] - 199);
+	}  
 	now = 199;
 	for (i = size-1; i >= 0; i--) {
 		if (vector[i] < now) {
@@ -84,10 +84,8 @@ int SCAN(int parked, int vector[], int size) {
 				sum = sum + distance;
 				nearest = i;
 				now = vector[nearest];
-				printf("visit %d\n", now);
 			}
 		}
-
 	}
 	return sum;
 }
@@ -96,6 +94,9 @@ int CSCAN(int parked, int vector[], int size) {
 	int i, sum = 0, now, distance = INT_MAX, nearest, beenthere[100] = { 0 };
 	now = parked;
 	sort(vector,size); // Sortera vektorn i egen funktion
+	if(parked > vector[size-1]) {
+		sum = abs(parked-199);
+	} else {	
 	for (i = 0; i < size; i++) {
 		if (vector[i] > now) {
 			distance = abs(now - vector[i]);
@@ -103,10 +104,11 @@ int CSCAN(int parked, int vector[], int size) {
 			nearest = i;
 			now = vector[nearest];
 			beenthere[nearest] = 1;
-			printf("visit %d\n", now);
 		}
 	}
 	sum = sum + abs(vector[size - 1] - 199);
+	}  
+	
 	now = 0;
 	for (i = 0; i < size; i++) {
 		if (vector[i] > now) {
@@ -115,7 +117,6 @@ int CSCAN(int parked, int vector[], int size) {
 				sum = sum + distance;
 				nearest = i;
 				now = vector[nearest];
-				printf("visit %d\n", now);
 			}
 		}
 	}
@@ -133,7 +134,6 @@ int LOOK(int parked, int vector[], int size) {
 			nearest = i;
 			now = vector[nearest];
 			beenthere[nearest] = 1;
-			printf("visit %d\n", now);
 		}
 	}
 	for (i = size-1; i >= 0; i--) {
@@ -143,7 +143,6 @@ int LOOK(int parked, int vector[], int size) {
 				sum = sum + distance;
 				nearest = i;
 				now = vector[nearest];
-				printf("visit %d\n", now);
 			}
 		}
 	}
@@ -161,7 +160,6 @@ int CLOOK(int parked, int vector[], int size) {
 			nearest = i;
 			now = vector[nearest];
 			beenthere[nearest] = 1;
-			printf("visit %d\n", now);
 		}
 	}
 	now = vector[0];
@@ -172,7 +170,6 @@ int CLOOK(int parked, int vector[], int size) {
 				sum = sum + distance;
 				nearest = i;
 				now = vector[nearest];
-				printf("visit %d\n", now);
 			}
 		}
 	}
@@ -184,11 +181,44 @@ main() {
 	int v3[] = { 37, 122, 14, 124, 65, 67, 98, 182 };
 	int v4[] = { 122, 14, 124, 65, 67, 98, 183, 38 };
 	int v5[] = { 98, 183, 37, 122, 14, 124, 65, 199 };
+	printf("KÖ 1: \n");
 	printf("FCFS: %d\n", FCFS(53, v, sizeof(v) / sizeof(int)));
 	printf("SSTF: %d\n", SSTF(53, v, sizeof(v) / sizeof(int)));
 	printf("SCAN: %d\n", SCAN(53, v, sizeof(v) / sizeof(int)));
 	printf("CSCAN: %d\n", CSCAN(53, v, sizeof(v) / sizeof(int)));
 	printf("LOOK: %d\n", LOOK(53, v, sizeof(v) / sizeof(int)));
 	printf("CLOOK: %d\n", CLOOK(53, v, sizeof(v) / sizeof(int)));
+	
+	printf("KÖ 2: \n");
+	printf("FCFS: %d\n", FCFS(98, v2, sizeof(v) / sizeof(int)));
+	printf("SSTF: %d\n", SSTF(98, v2, sizeof(v) / sizeof(int)));
+	printf("SCAN: %d\n", SCAN(98, v2, sizeof(v) / sizeof(int)));
+	printf("CSCAN: %d\n", CSCAN(98, v2, sizeof(v) / sizeof(int)));
+	printf("LOOK: %d\n", LOOK(98, v2, sizeof(v) / sizeof(int)));
+	printf("CLOOK: %d\n", CLOOK(98, v2, sizeof(v) / sizeof(int)));
+	
+	printf("\nKÖ 3: \n");
+	printf("FCFS: %d\n", FCFS(183, v3, sizeof(v) / sizeof(int)));
+	printf("SSTF: %d\n", SSTF(183, v3, sizeof(v) / sizeof(int)));
+	printf("SCAN: %d\n", SCAN(183, v3, sizeof(v) / sizeof(int)));
+	printf("CSCAN: %d\n", CSCAN(183, v3, sizeof(v) / sizeof(int)));
+	printf("LOOK: %d\n", LOOK(183, v3, sizeof(v) / sizeof(int)));
+	printf("CLOOK: %d\n", CLOOK(183, v3, sizeof(v) / sizeof(int)));
+	
+	printf("\nKÖ 4: \n");
+	printf("FCFS: %d\n", FCFS(37, v4, sizeof(v) / sizeof(int)));
+	printf("SSTF: %d\n", SSTF(37, v4, sizeof(v) / sizeof(int)));
+	printf("SCAN: %d\n", SCAN(37, v4, sizeof(v) / sizeof(int)));
+	printf("CSCAN: %d\n", CSCAN(37, v4, sizeof(v) / sizeof(int)));
+	printf("LOOK: %d\n", LOOK(37, v4, sizeof(v) / sizeof(int)));
+	printf("CLOOK: %d\n", CLOOK(37, v4, sizeof(v) / sizeof(int)));
+	
+	printf("\nKÖ 4: \n");
+	printf("FCFS: %d\n", FCFS(122, v5, sizeof(v) / sizeof(int)));
+	printf("SSTF: %d\n", SSTF(122, v5, sizeof(v) / sizeof(int)));
+	printf("SCAN: %d\n", SCAN(122, v5, sizeof(v) / sizeof(int)));
+	printf("CSCAN: %d\n", CSCAN(122, v5, sizeof(v) / sizeof(int)));
+	printf("LOOK: %d\n", LOOK(122, v5, sizeof(v) / sizeof(int)));
+	printf("CLOOK: %d\n", CLOOK(122, v5, sizeof(v) / sizeof(int)));
 	system("PAUSE");
 }
