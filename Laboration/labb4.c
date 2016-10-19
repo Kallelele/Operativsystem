@@ -98,7 +98,7 @@ int CSCAN(int parked, int vector[], int size) {
 		sum = abs(parked-199);
 	} else {	
 	for (i = 0; i < size; i++) {
-		if (vector[i] > now) {
+		if (vector[i] >= now) {
 			distance = abs(now - vector[i]);
 			sum = sum + distance;
 			nearest = i;
@@ -154,7 +154,7 @@ int CLOOK(int parked, int vector[], int size) {
 	now = parked;
 	sort(vector,size); // Sortera vektorn i egen funktion
 	for (i = 0; i < size; i++) {
-		if (vector[i] > now) {
+		if (vector[i] >= now) {
 			distance = abs(now - vector[i]);
 			sum = sum + distance;
 			nearest = i;
@@ -213,7 +213,7 @@ main() {
 	printf("LOOK: %d\n", LOOK(37, v4, sizeof(v) / sizeof(int)));
 	printf("CLOOK: %d\n", CLOOK(37, v4, sizeof(v) / sizeof(int)));
 	
-	printf("\nKÖ 4: \n");
+	printf("\nKÖ 5: \n");
 	printf("FCFS: %d\n", FCFS(122, v5, sizeof(v) / sizeof(int)));
 	printf("SSTF: %d\n", SSTF(122, v5, sizeof(v) / sizeof(int)));
 	printf("SCAN: %d\n", SCAN(122, v5, sizeof(v) / sizeof(int)));
